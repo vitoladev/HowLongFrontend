@@ -1,6 +1,4 @@
 import axios from 'axios';
-import dotenv from 'dotenv';
-dotenv.config();
 
 const getBySport = async (sport: string) => {
   const sportUri = process.env.REACT_APP_SPORT_URI;

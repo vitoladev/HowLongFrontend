@@ -1,15 +1,37 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import TeamModel from '../../models/TeamModel';
-import { Title, Image } from '../../styles';
+import { Container, Title, Image } from '../../styles';
 import { Table } from './styled';
 import dayjs from 'dayjs';
 import formatTime from './utils/formatTime';
+import { getById } from '../../http/sportService';
+import { RouteComponentProps } from 'react-router-dom';
 
-import { Container } from '@chakra-ui/react';
+interface RouterProps {
+  teamId: string;
+}
 
-const Team = ({ name, date, image }: TeamModel) => {
-  const championshipDate = dayjs(new Date(date));
+type TopicDetailProps = RouteComponentProps<RouterProps>;
+
+const Team = ({ match }: TopicDetailProps) => {
+  const {
+    params: { teamId },
+  } = match;
+
+  useEffect(() => {
+    (async () => {
+      const data = await getById(teamId);
+      const { championshipDate, image, name } = data;
+
+      setName(name);
+      setChampionshipDate(championshipDate);
+      setImage(image);
+    })();
+  }, [teamId]);
+
+  const [name, setName] = useState('');
+  const [image, setImage] = useState('');
+  const [championshipDate, setChampionshipDate] = useState(dayjs(new Date()));
   const [now, setNow] = useState(dayjs().subtract(3, 'h'));
 
   const years = now.diff(championshipDate, 'y');
@@ -46,10 +68,11 @@ const Team = ({ name, date, image }: TeamModel) => {
     }, 1000);
   });
   return (
-    <Container centerContent>
-      <Image src={image} />
+    <Container>
+      <Image src={`${process.env.REACT_APP_API_URI}${image}`} />
       <Title>
-        O último título da {name} foi em {dayjs(date).format('DD/MM/YYYY')}
+        O último título da {name} foi em{' '}
+        {dayjs(championshipDate).format('DD/MM/YYYY')}
       </Title>
       <Table>
         <thead>
@@ -71,13 +94,11 @@ const Team = ({ name, date, image }: TeamModel) => {
 };
 
 Team.propTypes = {
-  name: PropTypes.string,
-  date: PropTypes.string,
+  match: PropTypes.object.isRequired,
 };
 
 Team.defaultProps = {
-  name: '',
-  date: '',
+  match: null,
 };
 
 export default Team;
