@@ -8,15 +8,17 @@ const Container = styled.section`
 `;
 
 const Title = styled.h1`
+  letter-spacing: 1px;
   color: #fff;
-  font-size: clamp(1em, 2.5vw, 1.5em);
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
+  text-align: center;
   margin-top: 20px;
   margin-bottom: 20px;
 `;
 
 const Image = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
 `;
 
 export { Container, Title, Image };

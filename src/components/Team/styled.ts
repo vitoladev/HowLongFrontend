@@ -6,6 +6,7 @@ const Table = styled.table`
   align-items: center;
   flex-direction: center;
   border: 2px solid white;
+  margin-top: 1rem;
   color: #fff;
   thead {
     background-color: #fc115c;
@@ -13,17 +14,15 @@ const Table = styled.table`
   tr {
     text-align: center;
   }
-  tbody {
-    align-self: center;
-  }
+
   td {
-    font-size: clamp(1em, 2vw, 2rem);
+    font-size: clamp(1rem, 5vw, 1.8rem);
   }
 
   th {
     text-transform: uppercase;
-    padding: 5px;
-    font-size: clamp(1em, 2vw, 2rem);
+    padding: 2px;
+    font-size: clamp(1rem, 2vw, 2rem);
   }
 `;
 

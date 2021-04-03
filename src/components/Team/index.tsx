@@ -11,28 +11,40 @@ interface RouterProps {
   teamId: string;
 }
 
-type TopicDetailProps = RouteComponentProps<RouterProps>;
+type TeamDetailProps = RouteComponentProps<RouterProps>;
 
-const Team = ({ match }: TopicDetailProps) => {
+const Team = ({ match }: TeamDetailProps) => {
+  const [name, setName] = useState('');
+  const [image, setImage] = useState('');
+  const [championship, setChampionship] = useState('');
+  const [championshipDate, setChampionshipDate] = useState(dayjs(new Date()));
+  const [now, setNow] = useState(dayjs().subtract(3, 'h'));
+
   const {
     params: { teamId },
   } = match;
 
   useEffect(() => {
     (async () => {
-      const data = await getById(teamId);
-      const { championshipDate, image, name } = data;
+      try {
+        const data = await getById(teamId);
+        const { championship, championshipDate, image, name } = data;
 
-      setName(name);
-      setChampionshipDate(championshipDate);
-      setImage(image);
+        setName(name);
+        setChampionship(championship);
+        setChampionshipDate(championshipDate);
+        setImage(image);
+      } catch (e) {
+        console.log('erro: ', e);
+      }
     })();
   }, [teamId]);
 
-  const [name, setName] = useState('');
-  const [image, setImage] = useState('');
-  const [championshipDate, setChampionshipDate] = useState(dayjs(new Date()));
-  const [now, setNow] = useState(dayjs().subtract(3, 'h'));
+  useEffect(() => {
+    setTimeout(() => {
+      setNow(now.add(1, 's'));
+    }, 1000);
+  }, [now]);
 
   const years = now.diff(championshipDate, 'y');
   const months = dayjs().subtract(years, 'y').diff(championshipDate, 'M');
@@ -62,17 +74,16 @@ const Team = ({ match }: TopicDetailProps) => {
     .subtract(minutes, 'm')
     .diff(championshipDate, 's');
 
-  useEffect(() => {
-    setTimeout(() => {
-      setNow(now.add(1, 's'));
-    }, 1000);
-  });
   return (
     <Container>
-      <Image src={`${process.env.REACT_APP_API_URI}${image}`} />
+      <Image
+        style={{ marginTop: 25 }}
+        src={`${process.env.REACT_APP_API_URI}${image}`}
+      />
       <Title>
-        O último título da {name} foi em{' '}
-        {dayjs(championshipDate).format('DD/MM/YYYY')}
+        O último título da equipe <strong>{name}</strong> foi em{' '}
+        {dayjs(championshipDate).format('DD/MM/YYYY')} no campeonato{' '}
+        {championship}
       </Title>
       <Table>
         <thead>
