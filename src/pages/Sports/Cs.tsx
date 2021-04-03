@@ -6,8 +6,12 @@ const Cs = () => {
   const [teams, setTeams] = useState([]);
   useEffect(() => {
     (async () => {
-      const teams = await getBySport('cs');
-      setTeams(teams);
+      try {
+        const teams = await getBySport('cs');
+        setTeams(teams);
+      } catch (e) {
+        console.log('erro: ', e);
+      }
     })();
   }, []);
 
