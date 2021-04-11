@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import formatTime from './utils/formatTime';
 import { getById } from '../../http/sportService';
 import { RouteComponentProps } from 'react-router-dom';
+import LoadingSpinner from '../LoadingSpinner';
 
 interface RouterProps {
   teamId: string;
@@ -19,6 +20,7 @@ const Team = ({ match }: TeamDetailProps) => {
   const [championship, setChampionship] = useState('');
   const [championshipDate, setChampionshipDate] = useState(dayjs(new Date()));
   const [now, setNow] = useState(dayjs().subtract(3, 'h'));
+  const [loading, setLoading] = useState(true);
 
   const {
     params: { teamId },
@@ -34,8 +36,9 @@ const Team = ({ match }: TeamDetailProps) => {
         setChampionship(championship);
         setChampionshipDate(championshipDate);
         setImage(image);
+        setLoading(false);
       } catch (e) {
-        console.log('erro: ', e);
+        console.log(e);
       }
     })();
   }, [teamId]);
@@ -76,30 +79,36 @@ const Team = ({ match }: TeamDetailProps) => {
 
   return (
     <Container>
-      <Image
-        style={{ marginTop: 25 }}
-        src={`${process.env.REACT_APP_API_URI}${image}`}
-      />
-      <Title>
-        O último título da equipe <strong>{name}</strong> foi em{' '}
-        {dayjs(championshipDate).format('DD/MM/YYYY')} no campeonato{' '}
-        {championship}
-      </Title>
-      <Table>
-        <thead>
-          <tr>
-            <th>{name} não ganha um título há:</th>
-          </tr>
-        </thead>
-        <tbody color="white">
-          {formatTime(years, 'ano', 'anos')}
-          {formatTime(months, 'mes', 'meses')}
-          {formatTime(days, 'dia', 'dias')}
-          {formatTime(hours, 'hora', 'horas')}
-          {formatTime(minutes, 'minuto', 'minutos')}
-          {formatTime(seconds, 'segundo', 'segundos')}
-        </tbody>
-      </Table>
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <Image
+            style={{ marginTop: 25 }}
+            src={`${process.env.REACT_APP_API_URI}${image}`}
+          />
+          <Title>
+            O último título da equipe <strong>{name}</strong> foi em{' '}
+            {dayjs(championshipDate).format('DD/MM/YYYY')} no campeonato{' '}
+            {championship}
+          </Title>
+          <Table>
+            <thead>
+              <tr>
+                <th>{name} não ganha um título há:</th>
+              </tr>
+            </thead>
+            <tbody color="white">
+              {formatTime(years, 'ano', 'anos')}
+              {formatTime(months, 'mes', 'meses')}
+              {formatTime(days, 'dia', 'dias')}
+              {formatTime(hours, 'hora', 'horas')}
+              {formatTime(minutes, 'minuto', 'minutos')}
+              {formatTime(seconds, 'segundo', 'segundos')}
+            </tbody>
+          </Table>
+        </>
+      )}
     </Container>
   );
 };

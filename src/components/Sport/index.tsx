@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import SportModel from '../../models/SportModel';
-import { Container, Title, Image } from '../../styles';
+import { Title, Image } from '../../styles';
 import { Row, TeamContainer, TeamElement } from './styled';
 
 const Sport = ({ name, teams }: SportModel) => (
-  <Container>
+  <>
     <Title>Veja os últimos títulos dos times de {name}</Title>
     <Row>
       <TeamContainer>
@@ -18,7 +18,7 @@ const Sport = ({ name, teams }: SportModel) => (
         ))}
       </TeamContainer>
     </Row>
-  </Container>
+  </>
 );
 
 export default Sport;
