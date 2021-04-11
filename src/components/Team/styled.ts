@@ -26,4 +26,9 @@ const Table = styled.table`
   }
 `;
 
-export { Table };
+const HighlightedText = styled.span`
+  color: #fc115c;
+  font-weight: bold;
+`;
+
+export { Table, HighlightedText };

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Container, Title, Image } from '../../styles';
-import { Table } from './styled';
+import { Table, HighlightedText } from './styled';
 import dayjs from 'dayjs';
 import formatTime from './utils/formatTime';
 import { getById } from '../../http/sportService';
@@ -88,9 +88,9 @@ const Team = ({ match }: TeamDetailProps) => {
             src={`${process.env.REACT_APP_API_URI}${image}`}
           />
           <Title>
-            O último título da equipe <strong>{name}</strong> foi em{' '}
-            {dayjs(championshipDate).format('DD/MM/YYYY')} no campeonato{' '}
-            {championship}
+            O último título da equipe <HighlightedText>{name}</HighlightedText>{' '}
+            foi em {dayjs(championshipDate).format('DD/MM/YYYY')} no campeonato{' '}
+            <HighlightedText>{championship}</HighlightedText>
           </Title>
           <Table>
             <thead>
